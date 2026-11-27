@@ -655,6 +655,26 @@
           "highContrast": "#FF6E6E"
         }
       }
+    ],
+    "keybindings": [
+      {
+        "command": "snaptrack.commit",
+        "key": "ctrl+alt+enter",
+        "mac": "cmd+alt+enter",
+        "when": "snaptrack.initialized"
+      },
+      {
+        "command": "snaptrack.checkpoint",
+        "key": "ctrl+alt+s",
+        "mac": "cmd+alt+s",
+        "when": "snaptrack.initialized"
+      },
+      {
+        "command": "snaptrack.history",
+        "key": "ctrl+alt+h",
+        "mac": "cmd+alt+h",
+        "when": "snaptrack.initialized"
+      }
     ]
   },
   "scripts": {
