@@ -185,4 +185,3 @@ snaptrack prune [--checkpoints] [--older D] [--keep N]  # clean up storage
 ⭐ **[Star SnapTrack on GitHub](https://github.com/seeb4coding/snaptrack)** and **[leave a rating on the Marketplace](https://marketplace.visualstudio.com/items?itemName=seeb4coding.snaptrack&ssr=false#review-details)**. It really helps other people find it.
 
 Made by **[Seeb4Coding](https://seeb4coding.in)** · [YouTube demo](https://youtu.be/6h8j-ytF-9Q)
-s
