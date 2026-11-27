@@ -1,4 +1,9 @@
 # Changelog
+## 1.3.0
+- Multi-root workspaces: every folder gets its own SnapTrack in Source Control (changes, commit box, Start Tracking button), badges and gutter bars.
+- SnapTrack History shows one group per tracked folder. File History, the line hover and Revert Change follow the folder of the open file.
+- Commands from the Command Palette use the open file's folder, or ask which folder.
+- The status bar shows the folder of the open file. Folders added to or removed from the workspace are picked up right away.
 ## 1.2.0
 - Revert Change at Cursor: put back just the changed block under the cursor (right-click in the editor). Ctrl+Z undoes it.
 - Line history hover: hover a line to see which commit or checkpoint last changed it (snaptrack.lineHistoryHover).

@@ -81,6 +81,12 @@ Removes the last commit but keeps your files. The changes and the commit message
 ### Outgrown SnapTrack? Convert to Git
 **Convert History to a Git Repository…** (in the History **…** menu) creates a new folder with a real Git repository. Each SnapTrack commit becomes a Git commit with the same message, date and files. Checkpoints are left out. Your project folder isn't changed. Git must be installed.
 
+### Multiple folders
+In a multi-root workspace, every folder gets its own **SnapTrack** entry in Source Control, with its own Changes list, commit box and **Start Tracking** button.
+- **SnapTrack History** shows one group per tracked folder.
+- File History, the line hover, Revert Change and the status bar follow the folder of the file you have open.
+- Commands from the Command Palette work on the open file's folder, or ask you which folder.
+
 ### Clean up storage
 From the **…** menu you can delete checkpoints, keep only the last 20 commits, or remove unused data. Pinned entries are always kept.
 To clean up automatically, set `snaptrack.autoCleanup.checkpointMaxAgeDays` or `snaptrack.autoCleanup.maxCheckpoints`.
@@ -140,7 +146,7 @@ Unlikely. Identical files are stored once, large files are skipped, and **Clean 
 No. SnapTrack is a simple, safe undo history, not a full version-control system. When you need those, use **Convert History to a Git Repository…**.
 
 **Multi-root workspaces?**
-Only the first folder is tracked for now.
+Yes. Each folder gets its own **SnapTrack** entry in Source Control, and you start tracking each one separately. See [Multiple folders](#multiple-folders).
 
 ---
 

@@ -2,7 +2,7 @@
 const test = require('node:test'); const assert = require('node:assert');
 const fs = require('fs'), path = require('path'), os = require('os'); const Module = require('module');
 const calls = []; let answers = {};
-function makeVscode(root) {
+function makeVscode(root, more = []) {
   class Uri { constructor(o) { Object.assign(this, o); } static file(p) { return new Uri({ scheme: 'file', fsPath: p, path: p }); } static from(o) { return new Uri({ ...o, fsPath: o.path }); } toString() { return `${this.scheme}:${this.path}${this.query ? '?' + this.query : ''}`; } }
   class EventEmitter { constructor() { this.l = []; this.event = f => this.l.push(f); } fire(v) { this.l.forEach(f => f(v)); } }
   const commands = {}; const ctxKeys = {};
@@ -12,9 +12,9 @@ function makeVscode(root) {
     languages: { registerHoverProvider: (s, p) => { scm.hover = p; return { dispose() {} }; } }, EndOfLine: { LF: 1, CRLF: 2 }, Range: class { constructor(a, b) { this.start = a; this.end = b; } }, Hover: class { constructor(c) { this.contents = c; } }, MarkdownString: class { constructor(v) { this.value = v; } },
     WorkspaceEdit: class { constructor() { this.edits = []; } replace(u, r, t) { this.edits.push({ u, r, t }); } },
     RelativePattern: class { constructor(b, p) { this.base = b; this.pattern = p; } }, StatusBarAlignment: { Left: 1 }, ProgressLocation: { Notification: 15 },
-    workspace: { workspaceFolders: [{ uri: Uri.file(root) }], getConfiguration: () => ({ get: (k, d) => d }), registerTextDocumentContentProvider: (s, p) => { scm.content = p; return { dispose() {} }; },
+    workspace: { workspaceFolders: [root, ...more].map((r, index) => ({ uri: Uri.file(r), name: path.basename(r), index })), onDidChangeWorkspaceFolders: (f) => { scm.folderEvents = f; return { dispose() {} }; }, getConfiguration: () => ({ get: (k, d) => d }), registerTextDocumentContentProvider: (s, p) => { scm.content = p; return { dispose() {} }; },
       createFileSystemWatcher: () => ({ onDidChange() {}, onDidCreate() {}, onDidDelete() {}, dispose() {} }), onDidSaveTextDocument: () => ({ dispose() {} }), onDidChangeConfiguration: () => ({ dispose() {} }), applyEdit: async (we) => { scm.edits = we.edits; return true; } },
-    scm: { createSourceControl: (id, label, uri) => { scm.ctrl = { id, label, inputBox: { value: '' }, dispose() {}, createResourceGroup: (gid, gl) => (scm.group = { id: gid, label: gl, resourceStates: [], dispose() {} }) }; return scm.ctrl; } },
+    scm: { createSourceControl: (id, label, uri) => { scm.ctrls = scm.ctrls || []; if (!scm.ctrl) scm.ctrl = null; const ctrl = { id, label, rootUri: uri, inputBox: { value: '' }, dispose() {}, createResourceGroup: (gid, gl) => (ctrl.group = { id: gid, label: gl, resourceStates: [], dispose() {} }) }; scm.ctrls.push(ctrl); if (scm.ctrls.length === 1) { scm.ctrl = ctrl; Object.defineProperty(scm, "group", { get: () => scm.ctrls[0].group, configurable: true }); } return ctrl; } },
     window: { registerFileDecorationProvider: p => { scm.deco = p; return { dispose() {} }; }, createStatusBarItem: () => (scm.status = { show() {}, hide() {}, dispose() {} }), createOutputChannel: () => ({ appendLine() {}, show() {}, dispose() {} }),
       showInformationMessage: async (m, o, ...b) => { calls.push(['info', m]); return answers.info; }, showWarningMessage: async (m) => { calls.push(['warn', m]); return answers.warn; },
       showErrorMessage: async (m) => { calls.push(['error', m]); }, showInputBox: async () => answers.input, showQuickPick: async (items) => { const it = await items; return typeof answers.pick === 'function' ? answers.pick(it) : it[0]; },
@@ -123,6 +123,54 @@ test('extension 1.2: auto message, named checkpoint, pin, search, recently delet
   assert.match(hv(1).contents.value, /Update index\.php/); assert.match(hv(0).contents.value, /Initial snapshot/); assert.match(hv(2).contents.value, /after the newest snapshot/);
   // #9 status bar: change count + last checkpoint + storage
   await vs._commands['snaptrack.refresh'](); assert.match(vs._scm.status.text, /SnapTrack: \d+ · \$\(save\) just now/); assert.match(vs._scm.status.tooltip, /Storage: [\d.]+ MB/);
+  assert.ok(!calls.some(c => c[0] === 'error'), JSON.stringify(calls.filter(c => c[0] === 'error')));
+  Module._load = orig;
+});
+
+test('extension 1.3: multi-root — one Source Control per folder, routing by row / file / picker, folder nodes, folder removal', async () => {
+  const mkf = (n) => { const d = fs.mkdtempSync(path.join(os.tmpdir(), `snap13${n}-`)); fs.writeFileSync(path.join(d, `${n}.txt`), `${n}1\n`); return d; };
+  const A = mkf('a'), B = mkf('b');
+  const vs = makeVscode(A, [B]); const orig = Module._load; Module._load = function (r, ...a) { return r === 'vscode' ? vs : orig.call(this, r, ...a); };
+  delete require.cache[require.resolve('../out/extension.js')];
+  require('../out/extension.js').activate({ subscriptions: [], workspaceState: { get: () => true, update() {} } });
+  const [ca, cb] = vs._scm.ctrls; const keyA = vs.Uri.file(A).toString(), keyB = vs.Uri.file(B).toString();
+  assert.equal(vs._scm.ctrls.length, 2); assert.equal(vs._ctx['snaptrack.initialized'], false); assert.deepEqual(vs._ctx['snaptrack.untrackedRoots'], [keyA, keyB]);
+  // start tracking B from its Source Control row (+ button passes the SourceControl)
+  await vs._commands['snaptrack.init'](cb);
+  assert.ok(fs.existsSync(path.join(B, '.snaptrack'))); assert.ok(!fs.existsSync(path.join(A, '.snaptrack')));
+  assert.deepEqual(vs._ctx['snaptrack.trackedRoots'], [keyB]); assert.deepEqual(vs._ctx['snaptrack.untrackedRoots'], [keyA]); assert.equal(vs._ctx['snaptrack.initialized'], true);
+  // changes show only in B's group; badges only for B's files
+  fs.writeFileSync(path.join(B, 'b.txt'), 'b2\n'); fs.writeFileSync(path.join(A, 'a.txt'), 'a2\n'); await vs._commands['snaptrack.refresh']();
+  assert.equal(cb.group.resourceStates.length, 1); assert.equal(ca.group.resourceStates.length, 0); assert.match(ca.group.label, /Not tracking/);
+  assert.equal(vs._scm.deco.provideFileDecoration(vs.Uri.file(path.join(B, 'b.txt'))).badge, 'M'); assert.equal(vs._scm.deco.provideFileDecoration(vs.Uri.file(path.join(A, 'a.txt'))), undefined);
+  // Ctrl+Enter in B's box commits B (acceptInputCommand carries B's key)
+  assert.deepEqual(cb.acceptInputCommand.arguments, [keyB]); cb.inputBox.value = 'b commit'; answers = { info: 'Commit' };
+  await vs._commands['snaptrack.commit'](...cb.acceptInputCommand.arguments); assert.equal(cb.group.resourceStates.length, 0);
+  // diff content is served from B's store
+  fs.writeFileSync(path.join(B, 'b.txt'), 'b3\n'); await vs._commands['snaptrack.refresh']();
+  await vs._commands['snaptrack.openDiff'](...cb.group.resourceStates[0].command.arguments);
+  const d = calls.filter(c => c[1] === 'vscode.diff').pop(); assert.equal(vs._scm.content.provideTextDocumentContent(d[2][0]), 'b2\n'); assert.equal(d[2][1].fsPath, path.join(B, 'b.txt'));
+  // start A from the Explorer (folder Uri)
+  await vs._commands['snaptrack.init'](vs.Uri.file(A)); assert.deepEqual(vs._ctx['snaptrack.untrackedRoots'], []);
+  // History shows one node per tracked folder
+  const H = vs._scm.views['snaptrack.historyView']; let top = await H.getChildren();
+  assert.deepEqual(top.map(n => n.type + ':' + H.getTreeItem(n).label).sort(), ['folder:' + path.basename(A), 'folder:' + path.basename(B)].sort());
+  const bNode = top.find(n => n.t.root === B); assert.deepEqual((await H.getChildren(bNode)).filter(n => n.type === 'commit').map(n => H.getTreeItem(n).label), ['b commit', 'Initial snapshot']);
+  // palette command with no file open: asks which folder (picker), acts on the chosen one
+  let offered; answers = { pick: (items) => { offered = items.map(i => i.t?.name); return items.find(i => i.t?.root === A); } };
+  fs.writeFileSync(path.join(A, 'a.txt'), 'a3\n'); await vs._commands['snaptrack.checkpoint']();
+  assert.deepEqual(offered.sort(), [path.basename(A), path.basename(B)].sort());
+  assert.equal(require('../out/core.js').Store.prototype.commits.call({ dir: path.join(A, '.snaptrack') }).filter(c => c.auto).length, 1);
+  // with a file of B open: no picker, status bar names B, hover reads B's history
+  vs.window.activeTextEditor = { document: { uri: vs.Uri.file(path.join(B, 'b.txt')) } }; answers = { pick: () => { throw new Error('should not ask'); } };
+  vs.window.showInputBox = async () => 'named in b'; await vs._commands['snaptrack.checkpointNamed']();
+  assert.ok(require('../out/core.js').Store.prototype.commits.call({ dir: path.join(B, '.snaptrack') }).some(c => c.message === 'named in b'));
+  await vs._commands['snaptrack.refresh'](); assert.ok(vs._scm.status.text.includes(`SnapTrack (${path.basename(B)}): 1`), vs._scm.status.text);
+  const doc = { uri: vs.Uri.file(path.join(B, 'b.txt')), lineCount: 2, version: 1, getText: () => 'b3\n' };
+  assert.match(vs._scm.hover.provideHover(doc, { line: 0 }).contents.value, /named in b/);   // B's own history, not A's
+  // removing folder A from the workspace: History goes back to a flat list for B
+  vs._scm.folderEvents({ added: [], removed: [vs.workspace.workspaceFolders[0]] });
+  top = await H.getChildren(); assert.ok(top.every(n => n.type !== 'folder')); assert.deepEqual(vs._ctx['snaptrack.trackedRoots'], [keyB]);
   assert.ok(!calls.some(c => c[0] === 'error'), JSON.stringify(calls.filter(c => c[0] === 'error')));
   Module._load = orig;
 });

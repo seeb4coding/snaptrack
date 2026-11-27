@@ -2,7 +2,7 @@
   "name": "snaptrack",
   "displayName": "SnapTrack: Git-style Changes Without Git",
   "description": "Track file changes in any folder without Git. Git-style diffs, commit (confirm) or discard, history sidebar, auto checkpoints, restore the whole project, undo commit, export .patch/.zip.",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "publisher": "seeb4coding",
   "license": "MIT",
   "icon": "media/icon.png",
@@ -14,30 +14,13 @@
     "Other"
   ],
   "keywords": [
-    "local history",
-    "no git",
-    "without git",
-    "undo",
-    "backup",
-    "snapshot",
-    "checkpoint",
-    "history",
-    "file history",
     "diff",
-    "compare",
-    "restore",
-    "revert",
-    "version control",
-    "source control",
-    "scm",
+    "snapshot",
+    "history",
+    "no git",
+    "local history",
     "changes",
-    "commit",
-    "discard",
-    "timeline",
-    "git alternative",
-    "wordpress",
-    "php",
-    "beginner"
+    "commit"
   ],
   "main": "./out/extension.js",
   "activationEvents": [
@@ -249,27 +232,27 @@
         {
           "command": "snaptrack.init",
           "group": "navigation@0",
-          "when": "scmProvider == snaptrack && !snaptrack.initialized"
+          "when": "scmProvider == snaptrack && scmProviderRootUri in snaptrack.untrackedRoots"
         },
         {
           "command": "snaptrack.commit",
           "group": "navigation@1",
-          "when": "scmProvider == snaptrack && snaptrack.initialized"
+          "when": "scmProvider == snaptrack && scmProviderRootUri in snaptrack.trackedRoots"
         },
         {
           "command": "snaptrack.refresh",
           "group": "navigation@2",
-          "when": "scmProvider == snaptrack && snaptrack.initialized"
+          "when": "scmProvider == snaptrack && scmProviderRootUri in snaptrack.trackedRoots"
         },
         {
           "command": "snaptrack.history",
           "group": "navigation@3",
-          "when": "scmProvider == snaptrack && snaptrack.initialized"
+          "when": "scmProvider == snaptrack && scmProviderRootUri in snaptrack.trackedRoots"
         },
         {
           "command": "snaptrack.discardAll",
           "group": "1_modification",
-          "when": "scmProvider == snaptrack && snaptrack.initialized"
+          "when": "scmProvider == snaptrack && scmProviderRootUri in snaptrack.trackedRoots"
         },
         {
           "command": "snaptrack.showLog",
@@ -279,32 +262,32 @@
         {
           "command": "snaptrack.checkpoint",
           "group": "1_modification@2",
-          "when": "scmProvider == snaptrack && snaptrack.initialized"
+          "when": "scmProvider == snaptrack && scmProviderRootUri in snaptrack.trackedRoots"
         },
         {
           "command": "snaptrack.undoLastCommit",
           "group": "1_modification@3",
-          "when": "scmProvider == snaptrack && snaptrack.initialized"
+          "when": "scmProvider == snaptrack && scmProviderRootUri in snaptrack.trackedRoots"
         },
         {
           "command": "snaptrack.exportPatch",
           "group": "1_modification@4",
-          "when": "scmProvider == snaptrack && snaptrack.initialized"
+          "when": "scmProvider == snaptrack && scmProviderRootUri in snaptrack.trackedRoots"
         },
         {
           "command": "snaptrack.cleanup",
           "group": "2_other@1",
-          "when": "scmProvider == snaptrack && snaptrack.initialized"
+          "when": "scmProvider == snaptrack && scmProviderRootUri in snaptrack.trackedRoots"
         },
         {
           "command": "snaptrack.checkpointNamed",
           "group": "1_modification@2",
-          "when": "scmProvider == snaptrack && snaptrack.initialized"
+          "when": "scmProvider == snaptrack && scmProviderRootUri in snaptrack.trackedRoots"
         },
         {
           "command": "snaptrack.exportGit",
           "group": "2_other@2",
-          "when": "scmProvider == snaptrack && snaptrack.initialized"
+          "when": "scmProvider == snaptrack && scmProviderRootUri in snaptrack.trackedRoots"
         }
       ],
       "scm/resourceGroup/context": [
@@ -345,7 +328,7 @@
         {
           "command": "snaptrack.init",
           "group": "snaptrack",
-          "when": "!snaptrack.initialized && explorerResourceIsRoot"
+          "when": "explorerResourceIsRoot && resource in snaptrack.untrackedRoots"
         },
         {
           "command": "snaptrack.fileHistory",
