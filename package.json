@@ -655,7 +655,62 @@
           "highContrast": "#FF6E6E"
         }
       }
-    ]
+    ],
+    "walkthroughs": [
+    {
+      "id": "snaptrack.gettingStarted",
+      "title": "Get Started with SnapTrack",
+      "description": "Learn how to track your project, manage changes, and explore history.",
+      "steps": [
+        {
+          "id": "snaptrack.startTracking",
+          "title": "1. Start tracking your folder",
+          "description": "Let's get your project ready.",
+          "media": {
+            "markdown": "media/walkthrough/step1.md"
+          },
+          "completionEvents": [
+            "onContext:snaptrack.initialized"
+          ]
+        },
+        {
+          "id": "snaptrack.reviewChanges",
+          "title": "2. Make a change and view its diff",
+          "description": "Now see what SnapTrack detects.",
+          "media": {
+            "markdown": "media/walkthrough/step2.md"
+          },
+          "completionEvents": [
+            "onCommand:snaptrack.diffEntry"
+          ]
+        },
+        {
+          "id": "snaptrack.commitOrDiscard",
+          "title": "3. Commit or discard changes",
+          "description": "Keep your changes or undo them.",
+          "media": {
+            "markdown": "media/walkthrough/step3.md"
+          },
+          "completionEvents": [
+            "onCommand:snaptrack.commit",
+            "onCommand:snaptrack.discard",
+            "onCommand:snaptrack.discardAll"
+          ]
+        },
+        {
+          "id": "snaptrack.openHistory",
+          "title": "4. Explore SnapTrack History",
+          "description": "Explore your saved commits and checkpoints.",
+          "media": {
+            "markdown": "media/walkthrough/step4.md"
+          },
+          "completionEvents": [
+            "onView:snaptrack.historyView"
+          ]
+        }
+      ]
+    }
+  ]
   },
   "scripts": {
     "compile": "tsc -p ./",
