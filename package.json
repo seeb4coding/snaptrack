@@ -1,0 +1,663 @@
+{
+  "name": "snaptrack",
+  "displayName": "SnapTrack: Git-style Changes Without Git",
+  "description": "Track file changes in any folder without Git. Git-style diffs, commit (confirm) or discard, history sidebar, auto checkpoints, restore the whole project, undo commit, export .patch/.zip.",
+  "version": "1.2.0",
+  "publisher": "seeb4coding",
+  "license": "MIT",
+  "icon": "media/icon.png",
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "categories": [
+    "SCM Providers",
+    "Other"
+  ],
+  "keywords": [
+    "diff",
+    "snapshot",
+    "history",
+    "no git",
+    "local history",
+    "changes",
+    "commit"
+  ],
+  "main": "./out/extension.js",
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "snaptrack.init",
+        "title": "Start Tracking This Folder",
+        "category": "SnapTrack",
+        "icon": "$(add)"
+      },
+      {
+        "command": "snaptrack.commit",
+        "title": "Commit (Confirm Changes)",
+        "category": "SnapTrack",
+        "icon": "$(check)"
+      },
+      {
+        "command": "snaptrack.commitFile",
+        "title": "Commit This File",
+        "category": "SnapTrack",
+        "icon": "$(check)"
+      },
+      {
+        "command": "snaptrack.discard",
+        "title": "Discard Changes",
+        "category": "SnapTrack",
+        "icon": "$(discard)"
+      },
+      {
+        "command": "snaptrack.discardAll",
+        "title": "Discard All Changes",
+        "category": "SnapTrack",
+        "icon": "$(discard)"
+      },
+      {
+        "command": "snaptrack.openFile",
+        "title": "Open File",
+        "category": "SnapTrack",
+        "icon": "$(go-to-file)"
+      },
+      {
+        "command": "snaptrack.refresh",
+        "title": "Refresh",
+        "category": "SnapTrack",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "snaptrack.history",
+        "title": "Show Commit History",
+        "category": "SnapTrack",
+        "icon": "$(history)"
+      },
+      {
+        "command": "snaptrack.fileHistory",
+        "title": "Show History of This File",
+        "category": "SnapTrack",
+        "icon": "$(history)"
+      },
+      {
+        "command": "snaptrack.showLog",
+        "title": "Show Log",
+        "category": "SnapTrack",
+        "icon": "$(output)"
+      },
+      {
+        "command": "snaptrack.restoreProject",
+        "title": "Restore Project to This Commit",
+        "category": "SnapTrack",
+        "icon": "$(history)"
+      },
+      {
+        "command": "snaptrack.undoLastCommit",
+        "title": "Undo Last Commit (Keep Changes)",
+        "category": "SnapTrack",
+        "icon": "$(discard)"
+      },
+      {
+        "command": "snaptrack.checkpoint",
+        "title": "Save Checkpoint Now",
+        "category": "SnapTrack",
+        "icon": "$(save)"
+      },
+      {
+        "command": "snaptrack.compareWithCurrent",
+        "title": "Compare with Current Files",
+        "category": "SnapTrack",
+        "icon": "$(diff)"
+      },
+      {
+        "command": "snaptrack.selectForCompare",
+        "title": "Select for Compare",
+        "category": "SnapTrack",
+        "icon": "$(git-compare)"
+      },
+      {
+        "command": "snaptrack.compareWithSelected",
+        "title": "Compare with Selected",
+        "category": "SnapTrack",
+        "icon": "$(git-compare)"
+      },
+      {
+        "command": "snaptrack.compareCommits",
+        "title": "Compare Two Commits",
+        "category": "SnapTrack",
+        "icon": "$(git-compare)"
+      },
+      {
+        "command": "snaptrack.exportPatch",
+        "title": "Export Changes as .patch",
+        "category": "SnapTrack",
+        "icon": "$(export)"
+      },
+      {
+        "command": "snaptrack.exportZip",
+        "title": "Export Commit as .zip",
+        "category": "SnapTrack",
+        "icon": "$(file-zip)"
+      },
+      {
+        "command": "snaptrack.cleanup",
+        "title": "Clean Up Storage",
+        "category": "SnapTrack",
+        "icon": "$(trash)"
+      },
+      {
+        "command": "snaptrack.refreshHistory",
+        "title": "Refresh History",
+        "category": "SnapTrack",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "snaptrack.diffEntry",
+        "title": "Open Diff",
+        "category": "SnapTrack",
+        "icon": "$(diff)"
+      },
+      {
+        "command": "snaptrack.openEntryFile",
+        "title": "Open File",
+        "category": "SnapTrack",
+        "icon": "$(go-to-file)"
+      },
+      {
+        "command": "snaptrack.compareVersion",
+        "title": "Compare with Current File",
+        "category": "SnapTrack",
+        "icon": "$(diff)"
+      },
+      {
+        "command": "snaptrack.restoreVersion",
+        "title": "Restore This Version",
+        "category": "SnapTrack",
+        "icon": "$(discard)"
+      },
+      {
+        "command": "snaptrack.checkpointNamed",
+        "title": "Save Checkpoint As…",
+        "category": "SnapTrack",
+        "icon": "$(tag)"
+      },
+      {
+        "command": "snaptrack.pin",
+        "title": "Pin (Keep in Clean Up)",
+        "category": "SnapTrack",
+        "icon": "$(pin)"
+      },
+      {
+        "command": "snaptrack.unpin",
+        "title": "Unpin",
+        "category": "SnapTrack",
+        "icon": "$(pinned)"
+      },
+      {
+        "command": "snaptrack.searchHistory",
+        "title": "Search History",
+        "category": "SnapTrack",
+        "icon": "$(search)"
+      },
+      {
+        "command": "snaptrack.clearSearch",
+        "title": "Clear Search",
+        "category": "SnapTrack",
+        "icon": "$(clear-all)"
+      },
+      {
+        "command": "snaptrack.restoreDeleted",
+        "title": "Restore Deleted File",
+        "category": "SnapTrack",
+        "icon": "$(discard)"
+      },
+      {
+        "command": "snaptrack.revertChange",
+        "title": "Revert Change at Cursor",
+        "category": "SnapTrack",
+        "icon": "$(discard)"
+      },
+      {
+        "command": "snaptrack.exportGit",
+        "title": "Convert History to a Git Repository…",
+        "category": "SnapTrack",
+        "icon": "$(repo)"
+      }
+    ],
+    "menus": {
+      "scm/title": [
+        {
+          "command": "snaptrack.init",
+          "group": "navigation@0",
+          "when": "scmProvider == snaptrack && !snaptrack.initialized"
+        },
+        {
+          "command": "snaptrack.commit",
+          "group": "navigation@1",
+          "when": "scmProvider == snaptrack && snaptrack.initialized"
+        },
+        {
+          "command": "snaptrack.refresh",
+          "group": "navigation@2",
+          "when": "scmProvider == snaptrack && snaptrack.initialized"
+        },
+        {
+          "command": "snaptrack.history",
+          "group": "navigation@3",
+          "when": "scmProvider == snaptrack && snaptrack.initialized"
+        },
+        {
+          "command": "snaptrack.discardAll",
+          "group": "1_modification",
+          "when": "scmProvider == snaptrack && snaptrack.initialized"
+        },
+        {
+          "command": "snaptrack.showLog",
+          "group": "2_other",
+          "when": "scmProvider == snaptrack"
+        },
+        {
+          "command": "snaptrack.checkpoint",
+          "group": "1_modification@2",
+          "when": "scmProvider == snaptrack && snaptrack.initialized"
+        },
+        {
+          "command": "snaptrack.undoLastCommit",
+          "group": "1_modification@3",
+          "when": "scmProvider == snaptrack && snaptrack.initialized"
+        },
+        {
+          "command": "snaptrack.exportPatch",
+          "group": "1_modification@4",
+          "when": "scmProvider == snaptrack && snaptrack.initialized"
+        },
+        {
+          "command": "snaptrack.cleanup",
+          "group": "2_other@1",
+          "when": "scmProvider == snaptrack && snaptrack.initialized"
+        },
+        {
+          "command": "snaptrack.checkpointNamed",
+          "group": "1_modification@2",
+          "when": "scmProvider == snaptrack && snaptrack.initialized"
+        },
+        {
+          "command": "snaptrack.exportGit",
+          "group": "2_other@2",
+          "when": "scmProvider == snaptrack && snaptrack.initialized"
+        }
+      ],
+      "scm/resourceGroup/context": [
+        {
+          "command": "snaptrack.commit",
+          "group": "inline@2",
+          "when": "scmProvider == snaptrack"
+        },
+        {
+          "command": "snaptrack.discardAll",
+          "group": "inline@1",
+          "when": "scmProvider == snaptrack"
+        }
+      ],
+      "scm/resourceState/context": [
+        {
+          "command": "snaptrack.openFile",
+          "group": "inline@1",
+          "when": "scmProvider == snaptrack && scmResourceState != D"
+        },
+        {
+          "command": "snaptrack.discard",
+          "group": "inline@2",
+          "when": "scmProvider == snaptrack"
+        },
+        {
+          "command": "snaptrack.commitFile",
+          "group": "inline@3",
+          "when": "scmProvider == snaptrack"
+        },
+        {
+          "command": "snaptrack.fileHistory",
+          "group": "1_history",
+          "when": "scmProvider == snaptrack"
+        }
+      ],
+      "explorer/context": [
+        {
+          "command": "snaptrack.init",
+          "group": "snaptrack",
+          "when": "!snaptrack.initialized && explorerResourceIsRoot"
+        },
+        {
+          "command": "snaptrack.fileHistory",
+          "group": "snaptrack",
+          "when": "snaptrack.initialized && !explorerResourceIsFolder"
+        }
+      ],
+      "editor/title/context": [
+        {
+          "command": "snaptrack.fileHistory",
+          "group": "snaptrack",
+          "when": "snaptrack.initialized"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "snaptrack.commitFile",
+          "when": "false"
+        },
+        {
+          "command": "snaptrack.discard",
+          "when": "false"
+        },
+        {
+          "command": "snaptrack.openFile",
+          "when": "false"
+        },
+        {
+          "command": "snaptrack.diffEntry",
+          "when": "false"
+        },
+        {
+          "command": "snaptrack.openEntryFile",
+          "when": "false"
+        },
+        {
+          "command": "snaptrack.compareVersion",
+          "when": "false"
+        },
+        {
+          "command": "snaptrack.restoreVersion",
+          "when": "false"
+        },
+        {
+          "command": "snaptrack.selectForCompare",
+          "when": "false"
+        },
+        {
+          "command": "snaptrack.compareWithSelected",
+          "when": "false"
+        },
+        {
+          "command": "snaptrack.clearSearch",
+          "when": "snaptrack.filtering"
+        }
+      ],
+      "view/title": [
+        {
+          "command": "snaptrack.refreshHistory",
+          "group": "navigation@1",
+          "when": "view == snaptrack.historyView"
+        },
+        {
+          "command": "snaptrack.compareCommits",
+          "group": "navigation@2",
+          "when": "view == snaptrack.historyView"
+        },
+        {
+          "command": "snaptrack.checkpoint",
+          "group": "navigation@3",
+          "when": "view == snaptrack.historyView"
+        },
+        {
+          "command": "snaptrack.undoLastCommit",
+          "group": "1_actions@1",
+          "when": "view == snaptrack.historyView"
+        },
+        {
+          "command": "snaptrack.cleanup",
+          "group": "1_actions@2",
+          "when": "view == snaptrack.historyView"
+        },
+        {
+          "command": "snaptrack.searchHistory",
+          "group": "navigation@0",
+          "when": "view == snaptrack.historyView && !snaptrack.filtering"
+        },
+        {
+          "command": "snaptrack.clearSearch",
+          "group": "navigation@0",
+          "when": "view == snaptrack.historyView && snaptrack.filtering"
+        },
+        {
+          "command": "snaptrack.checkpointNamed",
+          "group": "1_actions@0",
+          "when": "view == snaptrack.historyView"
+        },
+        {
+          "command": "snaptrack.restoreDeleted",
+          "group": "1_actions@3",
+          "when": "view == snaptrack.historyView"
+        },
+        {
+          "command": "snaptrack.exportGit",
+          "group": "2_export@1",
+          "when": "view == snaptrack.historyView"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "snaptrack.compareWithCurrent",
+          "group": "inline@1",
+          "when": "view == snaptrack.historyView && viewItem =~ /snaptrackCommit|snaptrackCheckpoint/"
+        },
+        {
+          "command": "snaptrack.restoreProject",
+          "group": "inline@2",
+          "when": "view == snaptrack.historyView && viewItem =~ /snaptrackCommit|snaptrackCheckpoint/"
+        },
+        {
+          "command": "snaptrack.compareWithCurrent",
+          "group": "1_compare@1",
+          "when": "view == snaptrack.historyView && viewItem =~ /snaptrackCommit|snaptrackCheckpoint/"
+        },
+        {
+          "command": "snaptrack.selectForCompare",
+          "group": "1_compare@2",
+          "when": "view == snaptrack.historyView && viewItem =~ /snaptrackCommit|snaptrackCheckpoint/"
+        },
+        {
+          "command": "snaptrack.compareWithSelected",
+          "group": "1_compare@3",
+          "when": "view == snaptrack.historyView && viewItem =~ /snaptrackCommit|snaptrackCheckpoint/"
+        },
+        {
+          "command": "snaptrack.restoreProject",
+          "group": "2_restore@1",
+          "when": "view == snaptrack.historyView && viewItem =~ /snaptrackCommit|snaptrackCheckpoint/"
+        },
+        {
+          "command": "snaptrack.exportPatch",
+          "group": "3_export@1",
+          "when": "view == snaptrack.historyView && viewItem =~ /snaptrackCommit|snaptrackCheckpoint/"
+        },
+        {
+          "command": "snaptrack.exportZip",
+          "group": "3_export@2",
+          "when": "view == snaptrack.historyView && viewItem =~ /snaptrackCommit|snaptrackCheckpoint/"
+        },
+        {
+          "command": "snaptrack.openEntryFile",
+          "group": "inline@1",
+          "when": "view == snaptrack.historyView && viewItem == snaptrackEntry"
+        },
+        {
+          "command": "snaptrack.restoreVersion",
+          "group": "inline@1",
+          "when": "view == snaptrack.fileHistoryView && viewItem == snaptrackVersion"
+        },
+        {
+          "command": "snaptrack.compareVersion",
+          "group": "1@1",
+          "when": "view == snaptrack.fileHistoryView && viewItem == snaptrackVersion"
+        },
+        {
+          "command": "snaptrack.restoreVersion",
+          "group": "1@2",
+          "when": "view == snaptrack.fileHistoryView && viewItem == snaptrackVersion"
+        },
+        {
+          "command": "snaptrack.pin",
+          "group": "4_pin@1",
+          "when": "view == snaptrack.historyView && viewItem =~ /^snaptrack(Commit|Checkpoint)$/"
+        },
+        {
+          "command": "snaptrack.unpin",
+          "group": "4_pin@1",
+          "when": "view == snaptrack.historyView && viewItem =~ /Pinned$/"
+        },
+        {
+          "command": "snaptrack.restoreDeleted",
+          "group": "inline@1",
+          "when": "view == snaptrack.historyView && viewItem == snaptrackDeleted"
+        },
+        {
+          "command": "snaptrack.restoreDeleted",
+          "group": "1@1",
+          "when": "view == snaptrack.historyView && viewItem == snaptrackDeleted"
+        }
+      ],
+      "editor/context": [
+        {
+          "command": "snaptrack.revertChange",
+          "group": "snaptrack@1",
+          "when": "snaptrack.initialized && resourceScheme == file"
+        }
+      ]
+    },
+    "viewsWelcome": [
+      {
+        "view": "scm",
+        "contents": "SnapTrack can track changes in this folder without Git.\n[Start Tracking This Folder](command:snaptrack.init)",
+        "when": "workbenchState != empty && !snaptrack.initialized"
+      },
+      {
+        "view": "snaptrack.historyView",
+        "contents": "No commits yet."
+      }
+    ],
+    "configuration": {
+      "title": "SnapTrack",
+      "properties": {
+        "snaptrack.maxFileSizeMB": {
+          "type": "number",
+          "default": 20,
+          "description": "Files bigger than this are not tracked (videos, archives...)."
+        },
+        "snaptrack.exclude": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [],
+          "description": "Extra ignore patterns, same style as .gitignore (also read from a .snaptrackignore file in the folder)."
+        },
+        "snaptrack.confirmCommit": {
+          "type": "boolean",
+          "default": true,
+          "description": "Ask for confirmation before committing."
+        },
+        "snaptrack.autoCheckpointMinutes": {
+          "type": "number",
+          "default": 10,
+          "minimum": 0,
+          "description": "Save an automatic checkpoint of changed files every N minutes (0 = off). Checkpoints don't change your Changes list; they show in SnapTrack History."
+        },
+        "snaptrack.checkpointOnSave": {
+          "type": "boolean",
+          "default": false,
+          "description": "Also save an automatic checkpoint each time you save a file."
+        },
+        "snaptrack.showCheckpoints": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show auto checkpoints in the SnapTrack History view."
+        },
+        "snaptrack.lineHistoryHover": {
+          "type": "boolean",
+          "default": true,
+          "description": "Hover a line to see which commit or checkpoint last changed it."
+        },
+        "snaptrack.autoCleanup.checkpointMaxAgeDays": {
+          "type": "number",
+          "default": 0,
+          "minimum": 0,
+          "description": "Automatically delete auto checkpoints older than this many days (0 = off). Pinned and named checkpoints are always kept."
+        },
+        "snaptrack.autoCleanup.maxCheckpoints": {
+          "type": "number",
+          "default": 0,
+          "minimum": 0,
+          "description": "Automatically keep only this many of the newest auto checkpoints (0 = off). Pinned and named checkpoints are always kept."
+        }
+      }
+    },
+    "views": {
+      "scm": [
+        {
+          "id": "snaptrack.historyView",
+          "name": "SnapTrack History",
+          "when": "snaptrack.initialized",
+          "icon": "media/icon.png"
+        },
+        {
+          "id": "snaptrack.fileHistoryView",
+          "name": "SnapTrack File History",
+          "when": "snaptrack.initialized",
+          "icon": "media/icon.png"
+        }
+      ]
+    },
+    "colors": [
+      {
+        "id": "snaptrack.modifiedForeground",
+        "description": "SnapTrack: modified files",
+        "defaults": {
+          "light": "#B25E00",
+          "dark": "#FFB224",
+          "highContrast": "#FFC94D"
+        }
+      },
+      {
+        "id": "snaptrack.addedForeground",
+        "description": "SnapTrack: added files",
+        "defaults": {
+          "light": "#0B8A2E",
+          "dark": "#3DDC6E",
+          "highContrast": "#5CFF8A"
+        }
+      },
+      {
+        "id": "snaptrack.deletedForeground",
+        "description": "SnapTrack: deleted files",
+        "defaults": {
+          "light": "#D11A1A",
+          "dark": "#FF4D4D",
+          "highContrast": "#FF6E6E"
+        }
+      }
+    ]
+  },
+  "scripts": {
+    "compile": "tsc -p ./",
+    "test": "node --test test/*.test.js",
+    "package": "vsce package",
+    "vscode:prepublish": "npm run compile"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@types/vscode": "1.80.0",
+    "@vscode/vsce": "^3.1.0",
+    "typescript": "~5.6.3"
+  },
+  "bin": {
+    "snaptrack": "out/cli.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://seeb4coding.in"
+  },
+  "homepage": "https://seeb4coding.in"
+}
