@@ -11,7 +11,7 @@
 **Not using Git on a small project, a client site or a quick script?**
 SnapTrack gives any folder undo and history: see what changed, review a side-by-side diff, then keep it or throw it away. There's nothing to set up and no Git required.
 
-![SnapTrack demo: edit files, see M/A/D changes, open a diff, discard](images/demo.gif)
+![SnapTrack demo: edit files, see M/A/D changes, open a diff, discard](https://raw.githubusercontent.com/seeb4coding/snaptrack/main/images/demo.gif)
 
 ▶ **[Watch the 4-minute demo on YouTube](https://youtu.be/6h8j-ytF-9Q)**
 
