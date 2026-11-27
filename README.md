@@ -1,5 +1,13 @@
 # SnapTrack: Local History & Undo Without Git
 
+[![Marketplace version](https://img.shields.io/visual-studio-marketplace/v/seeb4coding.snaptrack?label=VS%20Code%20Marketplace&color=0b8a2e)](https://marketplace.visualstudio.com/items?itemName=seeb4coding.snaptrack)
+[![Installs](https://img.shields.io/visual-studio-marketplace/i/seeb4coding.snaptrack)](https://marketplace.visualstudio.com/items?itemName=seeb4coding.snaptrack)
+[![Rating](https://img.shields.io/visual-studio-marketplace/r/seeb4coding.snaptrack)](https://marketplace.visualstudio.com/items?itemName=seeb4coding.snaptrack&ssr=false#review-details)
+[![GitHub stars](https://img.shields.io/github/stars/seeb4coding/snaptrack?style=social)](https://github.com/seeb4coding/snaptrack)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
+**[Install from the VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=seeb4coding.snaptrack)** or run `ext install seeb4coding.snaptrack` in Quick Open (`Ctrl+P`).
+
 **Not using Git on a small project, a client site or a quick script?**
 SnapTrack gives any folder undo and history: see what changed, review a side-by-side diff, then keep it or throw it away. There's nothing to set up and no Git required.
 
@@ -138,7 +146,7 @@ Only the first folder is tracked for now.
 
 ## Command line (optional, for advanced users)
 
-SnapTrack also includes a small CLI. Get the source from the **Repository** link on this page, then inside that folder run:
+SnapTrack also includes a small CLI. Clone the source from [GitHub](https://github.com/seeb4coding/snaptrack), then inside that folder run:
 
 ```
 npm install -g .
@@ -161,6 +169,6 @@ snaptrack restore <file> <id>      # restore a file version
 
 ## Like SnapTrack?
 
-⭐ **[Leave a rating on the Marketplace](https://marketplace.visualstudio.com/items?itemName=seeb4coding.snaptrack&ssr=false#review-details)**. It really helps other people find it.
+⭐ **[Star SnapTrack on GitHub](https://github.com/seeb4coding/snaptrack)** and **[leave a rating on the Marketplace](https://marketplace.visualstudio.com/items?itemName=seeb4coding.snaptrack&ssr=false#review-details)**. It really helps other people find it.
 
 Made by **[Seeb4Coding](https://seeb4coding.in)** · [YouTube demo](https://youtu.be/6h8j-ytF-9Q)
