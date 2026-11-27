@@ -169,6 +169,13 @@ snaptrack discard <file|--all>     # discard changes
 snaptrack log                      # list commits
 snaptrack show <id>                # show a commit
 snaptrack restore <file> <id>      # restore a file version
+snaptrack restore-all <id>         # restore the whole project (checkpoint first)
+snaptrack undo                     # undo the last commit, keep the changes
+snaptrack checkpoint [msg]         # save a checkpoint
+snaptrack compare <id> [id2]       # compare with now, or two commits
+snaptrack export patch [id] [-o f] # write a .patch (changes or a commit)
+snaptrack export zip [id] [-o f]   # write a .zip of a commit
+snaptrack prune [--checkpoints] [--older D] [--keep N]  # clean up storage
 ```
 
 ---
