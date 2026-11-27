@@ -1,8 +1,8 @@
 # SnapTrack: Local History & Undo Without Git
 
-[![Marketplace version](https://img.shields.io/visual-studio-marketplace/v/seeb4coding.snaptrack?label=VS%20Code%20Marketplace&color=0b8a2e)](https://marketplace.visualstudio.com/items?itemName=seeb4coding.snaptrack)
-[![Installs](https://img.shields.io/visual-studio-marketplace/i/seeb4coding.snaptrack)](https://marketplace.visualstudio.com/items?itemName=seeb4coding.snaptrack)
-[![Rating](https://img.shields.io/visual-studio-marketplace/r/seeb4coding.snaptrack)](https://marketplace.visualstudio.com/items?itemName=seeb4coding.snaptrack&ssr=false#review-details)
+[![Marketplace version](https://vsmarketplacebadges.dev/version-short/seeb4coding.snaptrack.svg?label=VS%20Code%20Marketplace&colorB=0b8a2e)](https://marketplace.visualstudio.com/items?itemName=seeb4coding.snaptrack)
+[![Installs](https://vsmarketplacebadges.dev/installs-short/seeb4coding.snaptrack.svg)](https://marketplace.visualstudio.com/items?itemName=seeb4coding.snaptrack)
+[![Rating](https://vsmarketplacebadges.dev/rating-short/seeb4coding.snaptrack.svg)](https://marketplace.visualstudio.com/items?itemName=seeb4coding.snaptrack&ssr=false#review-details)
 [![GitHub stars](https://img.shields.io/github/stars/seeb4coding/snaptrack?style=social)](https://github.com/seeb4coding/snaptrack)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
