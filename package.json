@@ -657,7 +657,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://seeb4coding.in"
+    "url": "https://github.com/seeb4coding/snaptrack.git"
   },
-  "homepage": "https://seeb4coding.in"
+  "homepage": "https://seeb4coding.in",
+  "bugs": {
+    "url": "https://github.com/seeb4coding/snaptrack/issues"
+  }
 }
