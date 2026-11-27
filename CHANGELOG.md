@@ -1,4 +1,6 @@
 # Changelog
+## 1.3.1
+- README: demo GIF of the full flow (start tracking, M / A / D changes, side-by-side diff, commit), Marketplace and GitHub badges.
 ## 1.3.0
 - Multi-root workspaces: every folder gets its own SnapTrack in Source Control (changes, commit box, Start Tracking button), badges and gutter bars.
 - SnapTrack History shows one group per tracked folder. File History, the line hover and Revert Change follow the folder of the open file.
