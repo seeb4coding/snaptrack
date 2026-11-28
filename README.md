@@ -118,7 +118,22 @@ To stop tracking, delete `.snaptrack`. Git is never touched.
 
 ---
 
+## Keyboard shortcuts
+
+These shortcuts work once a folder is being tracked.
+
+| Action | Windows / Linux | Mac |
+|---|---|---|
+| Commit changes | `Ctrl+Alt+Enter` | `Cmd+Alt+Enter` |
+| Save Checkpoint Now | `Ctrl+Alt+S` | `Cmd+Alt+S` |
+| Show Commit History | `Ctrl+Alt+H` | `Cmd+Alt+H` |
+
+You can change any of these in **File → Preferences → Keyboard Shortcuts** and searching for `SnapTrack`.
+
+---
+
 ## Settings
+
 
 | Setting | Default | What it does |
 |---|---|---|
